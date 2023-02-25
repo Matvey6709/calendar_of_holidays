@@ -60,32 +60,32 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
+//
         v = inflater.inflate(R.layout.fragment_home, null, true);
-        sky = v.findViewById(R.id.constraintLayout);
-        lp = (LinearLayout.LayoutParams) sky.getLayoutParams();
-        the_main_scroll = v.findViewById(R.id.the_main_scroll);
-//        orientation();
+//        sky = v.findViewById(R.id.constraintLayout);
+//        lp = (LinearLayout.LayoutParams) sky.getLayoutParams();
+//        the_main_scroll = v.findViewById(R.id.the_main_scroll);
+////        orientation();
         creat_load_add();
         mainList = v.findViewById(R.id.Main_ListView);
         ListAdapter_MainScreen adapter = new ListAdapter_MainScreen(getActivity(), title, subtitle, q);
         mainList.setAdapter(adapter);
         textView = v.findViewById(R.id.textView2);
-        constraintLayout = v.findViewById(R.id.constraintLayout);
-        constraintLayout.setOnTouchListener(new OnSwipeTouchListener(getActivity()){
-            public void onSwipeTop() {
-                Toast.makeText(getActivity(), "top", Toast.LENGTH_SHORT).show();
-            }
-            public void onSwipeRight() {
-                Toast.makeText(getActivity(), "right", Toast.LENGTH_SHORT).show();
-            }
-            public void onSwipeLeft() {
-                Toast.makeText(getActivity(), "left", Toast.LENGTH_SHORT).show();
-            }
-            public void onSwipeBottom() {
-                Toast.makeText(getActivity(), "bottom", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        constraintLayout = v.findViewById(R.id.constraintLayout);
+//        constraintLayout.setOnTouchListener(new OnSwipeTouchListener(getActivity()){
+//            public void onSwipeTop() {
+//                Toast.makeText(getActivity(), "top", Toast.LENGTH_SHORT).show();
+//            }
+//            public void onSwipeRight() {
+//                Toast.makeText(getActivity(), "right", Toast.LENGTH_SHORT).show();
+//            }
+//            public void onSwipeLeft() {
+//                Toast.makeText(getActivity(), "left", Toast.LENGTH_SHORT).show();
+//            }
+//            public void onSwipeBottom() {
+//                Toast.makeText(getActivity(), "bottom", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
 
         return v;
