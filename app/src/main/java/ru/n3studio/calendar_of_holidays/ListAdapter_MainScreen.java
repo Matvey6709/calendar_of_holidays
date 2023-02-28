@@ -51,7 +51,7 @@ public class ListAdapter_MainScreen extends ArrayAdapter<String> {
         TextView subtitle_text = rootView.findViewById(R.id.text_subtitle_list);
         LinearLayout itemList = rootView.findViewById(R.id.itemList_Main);
         LinearLayout normalL = rootView.findViewById(R.id.normalL);
-        System.out.println(pos);
+//        System.out.println(pos);
 
 //        if(pos == add){
 //            itemList.removeAllViews();

@@ -1,4 +1,4 @@
-package ru.n3studio.calendar_of_holidays;
+package ru.n3studio.calendar_of_holidays.Fragments;
 
 import android.annotation.SuppressLint;
 import android.content.res.Configuration;
@@ -28,6 +28,11 @@ import com.yandex.mobile.ads.common.ImpressionData;
 import com.yandex.mobile.ads.common.InitializationListener;
 import com.yandex.mobile.ads.common.MobileAds;
 
+import ru.n3studio.calendar_of_holidays.GetHolidays;
+import ru.n3studio.calendar_of_holidays.ListAdapter_MainScreen;
+import ru.n3studio.calendar_of_holidays.MainActivity;
+import ru.n3studio.calendar_of_holidays.R;
+
 public class HomeFragment extends Fragment {
 
     View v;
@@ -37,10 +42,7 @@ public class HomeFragment extends Fragment {
     ConstraintLayout.LayoutParams lp2;
 
     ListView mainList;
-    String[] title = {"День батарейки", "День пиццы", "День пиццы", "День пиццы", "День пиццы", "День пиццы", "День пиццы", "День пиццы", ""};
-    String[] subtitle = {"Батарейку придумал итальянский учёный-физик Аллесандро Вольто.", "Это простое, на первый взгляд, \n" +
-            "итальянское национальное блюдо", "День пиццы", "День пиццы", "День пиццы", "День пиццы", "День пиццы", "День пиццы", ""};
-    int q = 1;
+
 
     BannerAdView mBannerAdView;
     AdRequest adRequest;
@@ -54,23 +56,25 @@ public class HomeFragment extends Fragment {
     String sUp;
     TextView textView;
     ConstraintLayout constraintLayout;
+    GetHolidays holidays;
+
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-//
         v = inflater.inflate(R.layout.fragment_home, null, true);
-//        sky = v.findViewById(R.id.constraintLayout);
-//        lp = (LinearLayout.LayoutParams) sky.getLayoutParams();
-//        the_main_scroll = v.findViewById(R.id.the_main_scroll);
-////        orientation();
-        creat_load_add();
         mainList = v.findViewById(R.id.Main_ListView);
-        ListAdapter_MainScreen adapter = new ListAdapter_MainScreen(getActivity(), title, subtitle, q);
-        mainList.setAdapter(adapter);
         textView = v.findViewById(R.id.textView2);
+        creat_load_add();
+        if (GetHolidays.adapter == null) {
+            holidays = new GetHolidays("http://n3studio.ru/holidays.json", getActivity(), mainList);
+        } else {
+            mainList.setAdapter(GetHolidays.adapter);
+        }
+
+
+
 //        constraintLayout = v.findViewById(R.id.constraintLayout);
 //        constraintLayout.setOnTouchListener(new OnSwipeTouchListener(getActivity()){
 //            public void onSwipeTop() {
@@ -87,10 +91,10 @@ public class HomeFragment extends Fragment {
 //            }
 //        });
 
+//        holidays = new GetHolidays("http://n3studio.ru/holidays.json", getActivity());
 
         return v;
-    }
-
+}
 
 
 //    public boolean onTouch(View v, MotionEvent event) {
@@ -118,79 +122,12 @@ public class HomeFragment extends Fragment {
 //    }
 
 
-
-    public int getScreenOrientation()
-    {
-        Display getOrient = getActivity().getWindowManager().getDefaultDisplay();
-        int orientation = Configuration.ORIENTATION_UNDEFINED;
-        if(getOrient.getWidth()==getOrient.getHeight()){
-            orientation = Configuration.ORIENTATION_SQUARE;
-        } else{
-            if(getOrient.getWidth() < getOrient.getHeight()){
-                orientation = Configuration.ORIENTATION_PORTRAIT;
-            }else {
-                orientation = Configuration.ORIENTATION_LANDSCAPE;
-            }
-        }
-        return orientation;
-    }
-
-    public void creat_load_add(){
-        MobileAds.initialize(getActivity(), new InitializationListener() {
-            @Override
-            public void onInitializationCompleted() {
-                Log.d("YANDEX_MOBILE_ADS_TAG", "SDK initialized");
-            }
-        });
+    public void creat_load_add() {
         mBannerAdView = v.findViewById(R.id.banner_ad_view);
         mBannerAdView.setAdUnitId("demo-banner-yandex");
         mBannerAdView.setAdSize(AdSize.stickySize(800));
         adRequest = new AdRequest.Builder().build();
-        mBannerAdView.setBannerAdEventListener(new BannerAdEventListener() {
-            @Override
-            public void onAdLoaded() {
-//                Toast.makeText(, "загрузилось", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdFailedToLoad(AdRequestError adRequestError) {
-//                Toast.makeText(this.getApplicationContext(), "ошибка", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdClicked() {
-
-            }
-
-            @Override
-            public void onLeftApplication() {
-
-            }
-
-            @Override
-            public void onReturnedToApplication() {
-
-            }
-
-            @Override
-            public void onImpression(@Nullable ImpressionData impressionData) {
-
-            }
-        });
-//        the_main_scroll.addView(mBannerAdView);
         mBannerAdView.loadAd(adRequest);
     }
 
-    public void orientation(){
-//        lp2 = (ConstraintLayout.LayoutParams) the_main_scroll.getLayoutParams();
-//        if(getScreenOrientation() == 1){
-//            lp.matchConstraintPercentHeight = (float) 0.35;
-//            lp2.matchConstraintPercentHeight = (float) 0.55;
-//        }else {
-//            lp.matchConstraintPercentHeight = (float) 0.75;
-//            lp2.matchConstraintPercentHeight = (float) 0.15;
-//        }
-//        sky.setLayoutParams(lp);
-//        the_main_scroll.setLayoutParams(lp2);
-    }
 }

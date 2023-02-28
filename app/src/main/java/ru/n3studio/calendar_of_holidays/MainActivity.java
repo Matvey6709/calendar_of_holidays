@@ -1,32 +1,21 @@
 package ru.n3studio.calendar_of_holidays;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Display;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.ScrollView;
-import android.widget.Toast;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.yandex.mobile.ads.banner.AdSize;
-import com.yandex.mobile.ads.banner.BannerAdEventListener;
-import com.yandex.mobile.ads.banner.BannerAdView;
-import com.yandex.mobile.ads.common.AdRequest;
-import com.yandex.mobile.ads.common.AdRequestError;
-import com.yandex.mobile.ads.common.ImpressionData;
 import com.yandex.mobile.ads.common.InitializationListener;
 import com.yandex.mobile.ads.common.MobileAds;
 
+import ru.n3studio.calendar_of_holidays.Convectror.Holiday;
+import ru.n3studio.calendar_of_holidays.Fragments.CalendarFragment;
+import ru.n3studio.calendar_of_holidays.Fragments.HomeFragment;
+import ru.n3studio.calendar_of_holidays.Fragments.SettingsFragment;
+import ru.n3studio.calendar_of_holidays.Fragments.WidgetFragment;
 import ru.n3studio.calendar_of_holidays.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -46,6 +35,12 @@ public class MainActivity extends AppCompatActivity {
 //    AdRequest adRequest;
 
     ActivityMainBinding binding;
+    HomeFragment homeFragment;
+    CalendarFragment calendarFragment;
+    WidgetFragment widgetFragment;
+    SettingsFragment settingsFragment;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,19 +48,29 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         fragmentReplace(new HomeFragment());
+        homeFragment = new HomeFragment();
+        calendarFragment = new CalendarFragment();
+        widgetFragment = new WidgetFragment();
+        settingsFragment = new SettingsFragment();
+        MobileAds.initialize(this, new InitializationListener() {
+            @Override
+            public void onInitializationCompleted() {
+                Log.d("YANDEX_MOBILE_ADS_TAG", "SDK initialized");
+            }
+        });
         binding.bottomnavigation.setOnItemSelectedListener(item -> {
             switch (item.getItemId()){
                 case R.id.Home:
-                    fragmentReplace(new HomeFragment());
+                    fragmentReplace(homeFragment);
                     break;
                 case R.id.Calendars:
-                    fragmentReplace(new CalendarFragment());
+                    fragmentReplace(calendarFragment);
                     break;
                 case R.id.Widgets:
-                    fragmentReplace(new WidgetFragment());
+                    fragmentReplace(widgetFragment);
                     break;
                 case R.id.Settings:
-                    fragmentReplace(new SettingsFragment());
+                    fragmentReplace(settingsFragment);
                     break;
             }
             return true;

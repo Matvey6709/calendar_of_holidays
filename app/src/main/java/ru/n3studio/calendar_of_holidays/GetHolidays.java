@@ -1,0 +1,121 @@
+package ru.n3studio.calendar_of_holidays;
+
+import android.app.Activity;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+import java.io.IOException;
+
+import ru.n3studio.calendar_of_holidays.Convectror.Converter;
+import ru.n3studio.calendar_of_holidays.Convectror.Holiday;
+import ru.n3studio.calendar_of_holidays.Convectror.Welcome;
+
+
+public class GetHolidays {
+
+    private Document doc;
+
+    private String url;
+
+    private Thread thread;
+
+    private Runnable runnable;
+
+    private Activity activity;
+
+    ListView listView;
+
+
+    String[] title;
+    String[] subtitle;
+
+    int day = 1;
+    int month = 1;
+    String datas = "01.02";
+    Welcome[] data;
+    Holiday[] hol;
+
+    public static ListAdapter_MainScreen adapter;
+
+
+    public GetHolidays(String url, Activity activity, ListView listView) {
+        this.url = url;
+        this.activity = activity;
+        this.listView = listView;
+
+        init();
+    }
+
+    public void init() {
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                getWeb();
+                try {
+                    System.out.println(doc.text());
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        data = Converter.fromJsonString(doc.text());
+                    }
+                    for (int i = 0; i < data.length - 1; i++) {
+                        System.out.println(data[i].getDate());
+                        if ((data[i].getDate()).equals(datas)) {
+                            hol = data[i].getHolidays();
+                            title = new String[hol.length];
+                            subtitle = new String[hol.length];
+                            System.out.println(title.length);
+                            System.out.println(subtitle.length);
+                            break;
+                        }
+
+                    }
+
+                    for (int j = 0; j < hol.length; j++) {
+                        title[j] = hol[j].getTitle();
+                        subtitle[j] = hol[j].getShortDescription();
+                        System.out.println(title[j]);
+                        System.out.println(subtitle[j]);
+                    }
+                    synchronized (this) {
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                adapter = new ListAdapter_MainScreen(activity, title, subtitle, 0);
+                                listView.setAdapter(adapter);
+                                adapter.notifyDataSetChanged();
+                            }
+                        });
+                    }
+                } catch (Exception e) {}
+
+            }
+        };
+        thread = new Thread(runnable);
+        thread.start();
+    }
+
+//    public void setAdapter(ListView listView, ListAdapter_MainScreen adapter) {
+//        synchronized (this) {
+//            activity.runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    listView.setAdapter(adapter);
+//                    adapter.notifyDataSetChanged();
+//                }
+//            });
+//        }
+//    }
+
+    public void getWeb() {
+        try {
+            doc = Jsoup.connect(url).ignoreContentType(true).get();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}

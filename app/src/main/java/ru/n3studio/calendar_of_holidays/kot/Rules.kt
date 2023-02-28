@@ -113,7 +113,9 @@ class BRuleScale(
 ) : BaseBRule() {
 
     init {
-        requireMinLessThenMax()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            requireMinLessThenMax()
+        }
     }
 
     override fun perform(offset: Float, details: InitialViewDetails, view: View) = with(view) {
@@ -131,7 +133,9 @@ class BRuleAlpha(
 ) : BaseBRule() {
 
     init {
-        requireMinLessThenMax()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            requireMinLessThenMax()
+        }
     }
 
     override fun perform(offset: Float, details: InitialViewDetails, view: View) {
@@ -150,7 +154,9 @@ class BRuleYOffset(
 ) : BaseBRule() {
 
     init {
-        requireMinLessThenMax()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            requireMinLessThenMax()
+        }
     }
 
     override fun perform(offset: Float, details: InitialViewDetails, view: View) {
@@ -168,7 +174,9 @@ class BRuleXOffset(
 ) : BaseBRule() {
 
     init {
-        requireMinLessThenMax()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            requireMinLessThenMax()
+        }
     }
 
     override fun perform(offset: Float, details: InitialViewDetails, view: View) {
