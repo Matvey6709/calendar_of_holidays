@@ -6,7 +6,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 
 import com.yandex.mobile.ads.common.InitializationListener;
 import com.yandex.mobile.ads.common.MobileAds;
@@ -52,16 +55,23 @@ public class MainActivity extends AppCompatActivity {
         calendarFragment = new CalendarFragment();
         widgetFragment = new WidgetFragment();
         settingsFragment = new SettingsFragment();
-        MobileAds.initialize(this, new InitializationListener() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
             @Override
-            public void onInitializationCompleted() {
-                Log.d("YANDEX_MOBILE_ADS_TAG", "SDK initialized");
+            public void run() {
+                MobileAds.initialize(MainActivity.this, new InitializationListener() {
+                    @Override
+                    public void onInitializationCompleted() {
+                        Log.d("YANDEX_MOBILE_ADS_TAG", "SDK initialized");
+                    }
+                });
             }
-        });
+        }, 1000);
+
         binding.bottomnavigation.setOnItemSelectedListener(item -> {
             switch (item.getItemId()){
                 case R.id.Home:
-                    fragmentReplace(homeFragment);
+                    fragmentReplace(new HomeFragment());
                     break;
                 case R.id.Calendars:
                     fragmentReplace(calendarFragment);
@@ -75,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         });
+
 
 
 //        Toast.makeText(getApplicationContext(),

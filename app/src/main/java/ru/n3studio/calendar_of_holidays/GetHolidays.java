@@ -1,12 +1,9 @@
 package ru.n3studio.calendar_of_holidays;
 
 import android.app.Activity;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.TextView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -30,24 +27,29 @@ public class GetHolidays {
     private Activity activity;
 
     ListView listView;
-
+    TextView maintext;
+    TextView maintext2;
 
     String[] title;
     String[] subtitle;
+    public static String[] description;
 
     int day = 1;
     int month = 1;
-    String datas = "01.02";
+    String datas = "01.01";
     Welcome[] data;
     Holiday[] hol;
+
 
     public static ListAdapter_MainScreen adapter;
 
 
-    public GetHolidays(String url, Activity activity, ListView listView) {
+    public GetHolidays(String url, Activity activity, ListView listView, TextView maintext , TextView maintext2) {
         this.url = url;
         this.activity = activity;
         this.listView = listView;
+        this.maintext = maintext;
+        this.maintext2 = maintext2;
 
         init();
     }
@@ -68,6 +70,7 @@ public class GetHolidays {
                             hol = data[i].getHolidays();
                             title = new String[hol.length];
                             subtitle = new String[hol.length];
+                            description = new String[hol.length];
                             System.out.println(title.length);
                             System.out.println(subtitle.length);
                             break;
@@ -78,6 +81,7 @@ public class GetHolidays {
                     for (int j = 0; j < hol.length; j++) {
                         title[j] = hol[j].getTitle();
                         subtitle[j] = hol[j].getShortDescription();
+                        description[j] = hol[j].getDescription();
                         System.out.println(title[j]);
                         System.out.println(subtitle[j]);
                     }
@@ -88,6 +92,8 @@ public class GetHolidays {
                                 adapter = new ListAdapter_MainScreen(activity, title, subtitle, 0);
                                 listView.setAdapter(adapter);
                                 adapter.notifyDataSetChanged();
+                                maintext.setText(title[0]);
+                                maintext2.setText(title[0]);
                             }
                         });
                     }
@@ -117,5 +123,9 @@ public class GetHolidays {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getDescription(int pos){
+        return description[pos];
     }
 }

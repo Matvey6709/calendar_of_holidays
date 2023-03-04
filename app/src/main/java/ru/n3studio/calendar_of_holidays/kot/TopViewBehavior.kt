@@ -13,6 +13,7 @@ import android.widget.TextView
 import com.behaviorule.arturdumchev.library.*
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
+import ru.n3studio.calendar_of_holidays.Fragments.HomeFragment
 import ru.n3studio.calendar_of_holidays.R
 
 
@@ -91,10 +92,10 @@ class TopInfoBehavior(
                         findViewById(R.id.imageView2),
                         BRuleAppear(visibleUntil = GONE_VIEW_THRESHOLD, animationDuration = 100L)
                 ),
-//                RuledView(
-//                        findViewById(R.id.textView2),
-//                        BRuleAppear(visibleUntil = GONE_VIEW_THRESHOLD, animationDuration = 100L)
-//                ),
+                RuledView(
+                        findViewById(R.id.txt),
+                        BRuleAppear(visibleUntil = GONE_VIEW_THRESHOLD, animationDuration = 100L)
+                ),
 //
                 imagesRuleFunc(findViewById(R.id.sky_moon), LinearInterpolator()),
 //                imagesRuleFunc2(textView2, LinearInterpolator())

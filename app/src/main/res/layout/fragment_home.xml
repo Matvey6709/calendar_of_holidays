@@ -9,6 +9,8 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/ablAppbar"
         android:layout_width="match_parent"
@@ -72,7 +74,8 @@
                     android:fontFamily="@font/poppins_semibold"
                     android:text="Ещё праздники в этот день:"
                     android:textColor="@color/white"
-                    android:textSize="22dp"
+                    android:textSize="25dp"
+                    android:maxLines="1"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.498"
@@ -116,12 +119,52 @@
 
     </androidx.core.widget.NestedScrollView>
 
+
     <include
         android:id="@+id/iTopDetails"
         layout="@layout/top_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_behavior="ru.n3studio.calendar_of_holidays.kot.TopInfoBehavior" />
+        app:layout_behavior="ru.n3studio.calendar_of_holidays.kot.TopInfoBehavior"
+        android:clickable="false" />
+
+    <FrameLayout
+        android:id="@+id/top_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="1000dp"
+        android:background="#360B7B"
+        app:behavior_peekHeight="280dp"
+        app:layout_behavior=".TopSheetBehavior"
+        android:clickable="false">
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="тут будет текст"
+            tools:ignore="HardcodedText"/>
+
+        <include
+            android:visibility="visible"
+            android:id="@+id/iTopDetailss"
+            layout="@layout/top_wiew2"
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="ru.n3studio.calendar_of_holidays.kot.TopInfoBehavior"
+            />
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/fdg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
