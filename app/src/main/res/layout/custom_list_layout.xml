@@ -10,7 +10,7 @@
         android:id="@+id/itemList_Main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/corners2"
+        style="@style/list"
         android:orientation="vertical">
         <LinearLayout
             android:id="@+id/normalL"
@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="День батарейки"
-                android:textColor="@color/white"
+                style="@style/text_main_sc"
                 android:textSize="20dp"
                 android:fontFamily="@font/poppins_semibold"/>
             <TextView
@@ -33,7 +33,7 @@
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:text="Батарейку придумал итальянский учёный-физик Аллесандро Вольто."
-                android:textColor="@color/white"
+                style="@style/text_main_sc"
                 android:textSize="12dp"
                 android:fontFamily="@font/poppins"/>
         </LinearLayout>

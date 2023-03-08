@@ -197,6 +197,8 @@ public class TopSheetBehavior<V extends View> extends CoordinatorLayout.Behavior
         // Intermediate states are restored as collapsed state
         if (ss.state == STATE_DRAGGING || ss.state == STATE_SETTLING) {
             mState = STATE_COLLAPSED;
+//            HomeFragment.vs2.setVisibility(View.VISIBLE);///////////
+//            HomeFragment.vs.setVisibility(View.INVISIBLE);
         } else {
             mState = ss.state;
         }
@@ -215,14 +217,13 @@ public class TopSheetBehavior<V extends View> extends CoordinatorLayout.Behavior
         mMinOffset = Math.max(-child.getHeight(), -(child.getHeight() - mPeekHeight));
         mMaxOffset = 0;
         if (mState == STATE_EXPANDED) {
-            HomeFragment.vs2.setVisibility(View.INVISIBLE);
-            HomeFragment.vs.setVisibility(View.INVISIBLE);
             ViewCompat.offsetTopAndBottom(child, mMaxOffset);
         } else if (mHideable && mState == STATE_HIDDEN) {
             ViewCompat.offsetTopAndBottom(child, -child.getHeight());
         } else if (mState == STATE_COLLAPSED) {
             HomeFragment.vs2.setVisibility(View.VISIBLE);
             HomeFragment.vs.setVisibility(View.INVISIBLE);
+            System.out.println("вызывается в самом начале");
             ViewCompat.offsetTopAndBottom(child, mMinOffset);
         } else if (mState == STATE_DRAGGING || mState == STATE_SETTLING) {
             ViewCompat.offsetTopAndBottom(child, savedTop - child.getTop());
@@ -244,6 +245,7 @@ public class TopSheetBehavior<V extends View> extends CoordinatorLayout.Behavior
         // Record the velocity
         if (action == MotionEvent.ACTION_DOWN) {
             reset();
+            System.out.println("нажато");
         }
         if (mVelocityTracker == null) {
             mVelocityTracker = VelocityTracker.obtain();
@@ -261,6 +263,7 @@ public class TopSheetBehavior<V extends View> extends CoordinatorLayout.Behavior
                 }
                 break;
             case MotionEvent.ACTION_DOWN:
+                System.out.println("нажато2");
                 int initialX = (int) event.getX();
                 mInitialY = (int) event.getY();
                 View scroll = mNestedScrollingChildRef.get();
@@ -285,8 +288,11 @@ public class TopSheetBehavior<V extends View> extends CoordinatorLayout.Behavior
                 Math.abs(mInitialY - event.getY()) > mViewDragHelper.getTouchSlop();
     }
 
+    boolean f = false;
+
     @Override
     public boolean onTouchEvent(CoordinatorLayout parent, V child, MotionEvent event) {
+
         if (!child.isShown()) {
             return false;
         }
@@ -303,6 +309,7 @@ public class TopSheetBehavior<V extends View> extends CoordinatorLayout.Behavior
             }
             if (mVelocityTracker == null) {
                 mVelocityTracker = VelocityTracker.obtain();
+                System.out.println("нажато первый раз");
             }
             mVelocityTracker.addMovement(event);
             // The ViewDragHelper tries to capture only the top-most View. We have to explicitly tell it
@@ -314,6 +321,8 @@ public class TopSheetBehavior<V extends View> extends CoordinatorLayout.Behavior
                 }
             }
         }
+
+
         return !mIgnoreEvents;
     }
 
@@ -343,6 +352,8 @@ public class TopSheetBehavior<V extends View> extends CoordinatorLayout.Behavior
                 } else {
                     consumed[1] = currentTop - mMinOffset;
                     ViewCompat.offsetTopAndBottom(child, -consumed[1]);
+//                    HomeFragment.vs2.setVisibility(View.VISIBLE);///////////
+//                    HomeFragment.vs.setVisibility(View.INVISIBLE);
                     setStateInternal(STATE_COLLAPSED);
                 }
             }
@@ -376,7 +387,8 @@ public class TopSheetBehavior<V extends View> extends CoordinatorLayout.Behavior
         int targetState;
         if (mLastNestedScrollDy < 0) {
             top = mMaxOffset;
-            HomeFragment.vs2.setVisibility(View.INVISIBLE);
+//            HomeFragment.vs2.setVisibility(View.VISIBLE);
+//            HomeFragment.vs.setVisibility(View.INVISIBLE);
             targetState = STATE_EXPANDED;
         } else if (mHideable && shouldHide(child, getYVelocity())) {
             top = -child.getHeight();
@@ -388,14 +400,14 @@ public class TopSheetBehavior<V extends View> extends CoordinatorLayout.Behavior
                 targetState = STATE_EXPANDED;
             } else {
                 top = mMinOffset;
-                HomeFragment.vs2.setVisibility(View.VISIBLE);
-                HomeFragment.vs.setVisibility(View.INVISIBLE);
+//                HomeFragment.vs2.setVisibility(View.VISIBLE);
+//                HomeFragment.vs.setVisibility(View.INVISIBLE);
                 targetState = STATE_COLLAPSED;
             }
         } else {
             top = mMinOffset;
-            HomeFragment.vs2.setVisibility(View.VISIBLE);
-            HomeFragment.vs.setVisibility(View.INVISIBLE);
+//            HomeFragment.vs2.setVisibility(View.VISIBLE);
+//            HomeFragment.vs.setVisibility(View.INVISIBLE);
             targetState = STATE_COLLAPSED;
         }
         if (mViewDragHelper.smoothSlideViewTo(child, child.getLeft(), top)) {
@@ -517,7 +529,9 @@ public class TopSheetBehavior<V extends View> extends CoordinatorLayout.Behavior
         int top;
         if (state == STATE_COLLAPSED) {
             top = mMinOffset;
-        } else if (state == STATE_EXPANDED) {
+//            HomeFragment.vs2.setVisibility(View.VISIBLE);
+//            HomeFragment.vs.setVisibility(View.INVISIBLE);
+        } else if (state == STATE_EXPANDED) {///////////////////////////
             top = mMaxOffset;
         } else if (mHideable && state == STATE_HIDDEN) {
             top = -child.getHeight();
@@ -527,6 +541,7 @@ public class TopSheetBehavior<V extends View> extends CoordinatorLayout.Behavior
         setStateInternal(STATE_SETTLING);
         if (mViewDragHelper.smoothSlideViewTo(child, child.getLeft(), top)) {
             ViewCompat.postOnAnimation(child, new SettleRunnable(child, state));
+            System.out.println("когда окно открывается");
         }
     }
 
@@ -558,9 +573,11 @@ public class TopSheetBehavior<V extends View> extends CoordinatorLayout.Behavior
         }
     }
 
+
     private void reset() {
         mActivePointerId = ViewDragHelper.INVALID_POINTER;
         if (mVelocityTracker != null) {
+
             mVelocityTracker.recycle();
             mVelocityTracker = null;
         }
@@ -627,7 +644,9 @@ public class TopSheetBehavior<V extends View> extends CoordinatorLayout.Behavior
                 setStateInternal(STATE_DRAGGING);
             }
         }
+
         final Handler handler = new Handler();
+
         @Override
         public void onViewReleased(View releasedChild, float xvel, float yvel) {
             int top;
@@ -645,8 +664,10 @@ public class TopSheetBehavior<V extends View> extends CoordinatorLayout.Behavior
                     targetState = STATE_EXPANDED;
                 } else {
                     top = mMinOffset;
-                    HomeFragment.vs2.setVisibility(View.VISIBLE);
+
+                    HomeFragment.vs2.setVisibility(View.VISIBLE);///////////
                     HomeFragment.vs.setVisibility(View.INVISIBLE);
+
                     targetState = STATE_COLLAPSED;
                 }
             } else {
@@ -657,12 +678,12 @@ public class TopSheetBehavior<V extends View> extends CoordinatorLayout.Behavior
                         HomeFragment.vs2.setVisibility(View.VISIBLE);///////////
                         HomeFragment.vs.setVisibility(View.INVISIBLE);
                     }
-                }, 280);
-
+                }, 100);
                 targetState = STATE_COLLAPSED;
             }
             if (mViewDragHelper.settleCapturedViewAt(releasedChild.getLeft(), top)) {
                 setStateInternal(STATE_SETTLING);
+                System.out.println("когда окно закрывается");
                 ViewCompat.postOnAnimation(releasedChild,
                         new SettleRunnable(releasedChild, targetState));
             } else {
@@ -695,7 +716,7 @@ public class TopSheetBehavior<V extends View> extends CoordinatorLayout.Behavior
         if (topSheet != null && mCallback != null) {
 
             Boolean isOpening = oldState == TopSheetBehavior.STATE_COLLAPSED;
-            HomeFragment.vs2.setVisibility(View.VISIBLE);
+//            HomeFragment.vs2.setVisibility(View.VISIBLE);
 //            HomeFragment.vs.setVisibility(View.INVISIBLE);//////////////
             if (top < mMinOffset) {
                 mCallback.onSlide(topSheet, (float) (top - mMinOffset) / mPeekHeight, isOpening);
@@ -721,6 +742,7 @@ public class TopSheetBehavior<V extends View> extends CoordinatorLayout.Behavior
         @Override
         public void run() {
             if (mViewDragHelper != null && mViewDragHelper.continueSettling(true)) {
+                System.out.println("когда окно закрылось или открытлось");
                 ViewCompat.postOnAnimation(mView, this);
             } else {
                 setStateInternal(mTargetState);

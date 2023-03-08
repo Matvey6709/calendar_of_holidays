@@ -24,17 +24,6 @@
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintWidth_percent="1">
 
-        <!--        <ImageView-->
-        <!--            android:id="@+id/imageView"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            app:layout_constraintBottom_toTopOf="@+id/imageView2"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintHorizontal_bias="0.0"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toTopOf="parent"-->
-        <!--            app:layout_constraintVertical_bias="0.0"-->
-        <!--            app:srcCompat="@drawable/sky" />-->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout2"
             android:layout_width="match_parent"
@@ -56,7 +45,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
-                app:srcCompat="@drawable/backround" />
+                style="@style/bac_sc" />
 
             <LinearLayout
                 android:id="@+id/linearLayout"
@@ -69,24 +58,25 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/sky_star" />
+                    style="@style/bac_points" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/sky_star" />
+                    style="@style/bac_points"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/sky_star" />
+                    style="@style/bac_points" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/sky_star" />
+                    style="@style/bac_points" />
 
             </LinearLayout>
 
@@ -94,7 +84,7 @@
                 android:id="@+id/sky_moon"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/sky_moon"
+                style="@style/bac_moon"
                 app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_percent="0.20"
@@ -108,6 +98,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:scaleType="fitXY"
+
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_percent="0.25"
@@ -116,7 +107,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="1.0"
                 app:layout_constraintWidth_percent="1"
-                app:srcCompat="@drawable/sky_land2" />
+                style="@style/bac_main_land" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -138,8 +129,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="18 февраля"
-                android:textColor="#FFFFFF"
                 android:textSize="50dp"
+                style="@style/text_main_sc"
                 app:layout_constraintBottom_toTopOf="@+id/imageView2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.13"
@@ -152,8 +143,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="День батарейки"
-                android:textColor="#FFFFFF"
                 android:textSize="25dp"
+                style="@style/text_main_sc"
                 app:layout_constraintBottom_toTopOf="@+id/imageView2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.09"
@@ -170,11 +161,11 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="6dp"
-            android:alpha="0.4"
             android:text="Проведите пальцем вниз для получения подробной информации"
             android:textAlignment="center"
-            android:textColor="#FFFFFF"
             android:textSize="12dp"
+            android:alpha="0.4"
+            style="@style/text_main_sc"
             app:layout_constraintBottom_toTopOf="@+id/imageView2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
@@ -203,7 +194,7 @@
         android:layout_marginTop="15dp"
         android:gravity="center_vertical"
         android:text="18 февраля"
-        android:textColor="#FFFFFF"
+        style="@style/text_main_sc"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -216,7 +207,7 @@
     <TextView
         android:id="@+id/txt"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="150dp"
         app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

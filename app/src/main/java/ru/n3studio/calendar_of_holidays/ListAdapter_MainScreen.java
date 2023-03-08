@@ -2,6 +2,7 @@ package ru.n3studio.calendar_of_holidays;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.yandex.mobile.ads.banner.AdSize;
 import com.yandex.mobile.ads.banner.BannerAdEventListener;
@@ -29,6 +31,12 @@ public class ListAdapter_MainScreen extends ArrayAdapter<String> {
     private final String subtitle[];
     private final int q;
 
+    public String[] getTitle(){
+        return title;
+    }
+    public String[] getSubtitle(){
+        return subtitle;
+    }
 
     public ListAdapter_MainScreen(Activity context, String[] title, String[] subtitle, int q) {
         super(context, R.layout.custom_list_layout, title);
@@ -51,6 +59,15 @@ public class ListAdapter_MainScreen extends ArrayAdapter<String> {
         TextView subtitle_text = rootView.findViewById(R.id.text_subtitle_list);
         LinearLayout itemList = rootView.findViewById(R.id.itemList_Main);
         LinearLayout normalL = rootView.findViewById(R.id.normalL);
+        if(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES){
+            itemList.setBackgroundResource(R.drawable.corners2_ligth);
+            title_text.setTextColor(getContext().getResources().getColor(R.color.b));
+            subtitle_text.setTextColor(getContext().getResources().getColor(R.color.b));
+        }else {
+            itemList.setBackgroundResource(R.drawable.corners2);
+            title_text.setTextColor(Color.WHITE);
+            subtitle_text.setTextColor(Color.WHITE);
+        }
 //        System.out.println(pos);
 
 //        if(pos == add){
@@ -66,11 +83,11 @@ public class ListAdapter_MainScreen extends ArrayAdapter<String> {
 //        if(!i){
         title_text.setText(title[pos]);
         subtitle_text.setText(subtitle[pos]);
-        if (q == pos) {
-            itemList.setBackgroundResource(R.drawable.corners);
-        } else {
-            itemList.setBackgroundResource(R.drawable.corners2);
-        }
+//        if (q == pos) {
+//            itemList.setBackgroundResource(R.drawable.corners);
+//        } else {
+//            itemList.setBackgroundResource(R.drawable.corners2);
+//        }
 //        }else if(pos > 1){
 //            normalL.setVisibility(View.VISIBLE);
 //            title_text.setText(title[pos-1]);

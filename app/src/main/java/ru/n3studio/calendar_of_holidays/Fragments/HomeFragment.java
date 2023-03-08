@@ -1,50 +1,35 @@
 package ru.n3studio.calendar_of_holidays.Fragments;
 
-import static android.view.DragEvent.ACTION_DRAG_ENDED;
-import static android.view.DragEvent.ACTION_DRAG_ENTERED;
-import static android.view.DragEvent.ACTION_DRAG_EXITED;
-import static android.view.DragEvent.ACTION_DRAG_LOCATION;
-import static android.view.DragEvent.ACTION_DRAG_STARTED;
-import static android.view.DragEvent.ACTION_DROP;
-
-import android.animation.Animator;
 import android.annotation.SuppressLint;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.view.NestedScrollingChild;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
-import android.util.DisplayMetrics;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.yandex.mobile.ads.banner.AdSize;
-import com.yandex.mobile.ads.banner.BannerAdEventListener;
 import com.yandex.mobile.ads.banner.BannerAdView;
 import com.yandex.mobile.ads.common.AdRequest;
-import com.yandex.mobile.ads.common.AdRequestError;
-import com.yandex.mobile.ads.common.ImpressionData;
 
-import org.w3c.dom.ls.LSOutput;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+import android.text.format.DateFormat;
 
 import ru.n3studio.calendar_of_holidays.GetHolidays;
-import ru.n3studio.calendar_of_holidays.OnSwipeTouchListener;
+import ru.n3studio.calendar_of_holidays.ListAdapter_MainScreen;
 import ru.n3studio.calendar_of_holidays.R;
 import ru.n3studio.calendar_of_holidays.TopSheetBehavior;
 
@@ -78,6 +63,8 @@ public class HomeFragment extends Fragment {
     TextView title1;
     TextView title2;
     TextView description;
+    TextView textData;
+    TextView textData_;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -89,47 +76,58 @@ public class HomeFragment extends Fragment {
         title1 = v.findViewById(R.id.textView2);
         title2 = v.findViewById(R.id.textView31);
         description = v.findViewById(R.id.description);
-        if (GetHolidays.adapter == null) {
-            holidays = new GetHolidays("http://n3studio.ru/holidays.json", getActivity(), mainList, title1, title2);
-        } else {
-            try {
-                mainList.setAdapter(GetHolidays.adapter);
-                description.setText(GetHolidays.description[0]);
-            }catch (Exception e){}
-        }
-        vs = v.findViewById(R.id.top_sheet);
+        textData = v.findViewById(R.id.tvTopDetails2);
+        textData_ = v.findViewById(R.id.tvTopDetails2_);
+        vs = v.findViewById(R.id.top_sheet);//выдвигающееся окно
         vs.setVisibility(View.VISIBLE);
 
-        vs2 = v.findViewById(R.id.iTopDetails);
+        vs2 = v.findViewById(R.id.iTopDetails);// колапсирующая
         vs2.setVisibility(View.VISIBLE);
-        TopSheetBehavior.from(vs).setState(TopSheetBehavior.STATE_COLLAPSED);
-        TextView con = v.findViewById(R.id.txt);
-        con.setOnTouchListener(new View.OnTouchListener() {
+        ConstraintLayout con = v.findViewById(R.id.constraintLayout22);
+        LinearLayout con2 = v.findViewById(R.id.tvTopDetails22);
+        con.setVisibility(View.INVISIBLE);
+
+        TextView txt = v.findViewById(R.id.txt);
+        txt.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 Toast.makeText(getContext(), "подождите", Toast.LENGTH_LONG).show();
                 return false;
             }
         });
-        handler.postDelayed(new Runnable() {
+
+
+        txt.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void run() {
-                con.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        if (TopSheetBehavior.from(vs).getState() == TopSheetBehavior.STATE_COLLAPSED) {
-                            vs2.setVisibility(View.INVISIBLE);
-                            vs.setVisibility(View.VISIBLE);
-                            TopSheetBehavior.from(vs).setState(TopSheetBehavior.STATE_EXPANDED);
-                            try {
-                                description.setText(GetHolidays.description[0]);
-                            }catch (Exception e){}
-                        }
-                        return false;
-                    }
-                });
+            public boolean onTouch(View v, MotionEvent event) {
+//                TopSheetBehavior.from(vs).setState(TopSheetBehavior.STATE_EXPANDED);
+                vs2.setVisibility(View.INVISIBLE);
+                vs.setVisibility(View.VISIBLE);
+                con.setVisibility(View.VISIBLE);
+                con2.setVisibility(View.VISIBLE);
+                try {
+                    description.setText(GetHolidays.description[0]);
+                } catch (Exception e) {
+                }
+
+                return false;
             }
-        }, 1000);
+        });
+
+        if (GetHolidays.adapter == null) {
+            holidays = new GetHolidays("http://n3studio.ru/holidays.json", getActivity(), mainList, title1, title2);
+        } else {
+            try {
+                GetHolidays.adapter.notifyDataSetChanged();
+                mainList.setAdapter(GetHolidays.adapter);
+
+                description.setText(GetHolidays.description[0]);
+                title1.setText(GetHolidays.title[0]);
+                title2.setText(GetHolidays.title[0]);
+            } catch (Exception e) {
+            }
+        }
+
 
         mainList.setClickable(true);
         mainList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -137,18 +135,22 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
                 if (TopSheetBehavior.from(vs).getState() == TopSheetBehavior.STATE_COLLAPSED) {
-                    System.out.println("SDgdfg  " + position);
                     vs2.setVisibility(View.INVISIBLE);
                     vs.setVisibility(View.VISIBLE);
+                    con.setVisibility(View.INVISIBLE);
+                    con2.setVisibility(View.INVISIBLE);
                     try {
                         description.setText(GetHolidays.description[position]);
-                    }catch (Exception e){}
+                    } catch (Exception e) {
+                    }
                     TopSheetBehavior.from(vs).setState(TopSheetBehavior.STATE_EXPANDED);
                 }
 
             }
         });
 
+
+        getData();
 
 //        con.setBackgroundColor(getResources().getColor(R.color.p));
 //
@@ -190,6 +192,69 @@ public class HomeFragment extends Fragment {
         mBannerAdView.setAdSize(AdSize.stickySize(800));
         adRequest = new AdRequest.Builder().build();
         mBannerAdView.loadAd(adRequest);
+
+    }
+
+
+    public void getData() {
+        try {
+            Date date = new Date();
+            String day = (String) DateFormat.format("dd", date); // 20
+            String monthString = (String) DateFormat.format("MMM", date); // Jun
+            String monthNumber  = (String) DateFormat.format("MM",   date); // 06
+            switch (monthNumber) {
+                case "01":
+                    textData.setText(day + " " + "январь");
+                    textData_.setText(day + " " + "январь");
+                    break;
+                case "02":
+                    textData.setText(day + " " + "февраль");
+                    textData_.setText(day + " " + "февраль");
+                    break;
+                case "03":
+                    textData.setText(day + " " + "марта");
+                    textData_.setText(day + " " + "марта");
+                    break;
+                case "04":
+                    textData.setText(day + " " + "апрель");
+                    textData_.setText(day + " " + "апрель");
+                    break;
+                case "05":
+                    textData.setText(day + " " + "май");
+                    textData_.setText(day + " " + "май");
+                    break;
+                case "06":
+                    textData.setText(day + " " + "июнь");
+                    textData_.setText(day + " " + "июнь");
+                    break;
+                case "07":
+                    textData.setText(day + " " + "июль");
+                    textData_.setText(day + " " + "июль");
+                    break;
+                case "08":
+                    textData.setText(day + " " + "август");
+                    textData_.setText(day + " " + "август");
+                    break;
+                case "09":
+                    textData.setText(day + " " + "сентябрь");
+                    textData_.setText(day + " " + "сентябрь");
+                    break;
+                case "10":
+                    textData.setText(day + " " + "октябрь");
+                    textData_.setText(day + " " + "октябрь");
+                    break;
+                case "11":
+                    textData.setText(day + " " + "ноябрь");
+                    textData_.setText(day + " " + "ноябрь");
+                    break;
+                case "12":
+                    textData.setText(day + " " + "декабрь");
+                    textData_.setText(day + " " + "декабрь");
+                    break;
+            }
+        } catch (Exception e) {
+        }
+
 
     }
 

@@ -1,15 +1,20 @@
 package ru.n3studio.calendar_of_holidays;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
 import com.yandex.mobile.ads.common.InitializationListener;
 import com.yandex.mobile.ads.common.MobileAds;
@@ -39,10 +44,10 @@ public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
     HomeFragment homeFragment;
-    CalendarFragment calendarFragment;
+    public static CalendarFragment calendarFragment;
     WidgetFragment widgetFragment;
-    SettingsFragment settingsFragment;
-
+    public static SettingsFragment settingsFragment;
+    SharedPreferences prefs;
 
 
     @Override
@@ -50,11 +55,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        fragmentReplace(new HomeFragment());
         homeFragment = new HomeFragment();
+        prefs = this.getSharedPreferences(
+                "theme", Context.MODE_PRIVATE);
         calendarFragment = new CalendarFragment();
         widgetFragment = new WidgetFragment();
         settingsFragment = new SettingsFragment();
+        if (prefs.getBoolean("theme", false)) {
+            prefs.edit().putBoolean("theme", false).apply();
+            fragmentReplace(settingsFragment);
+        } else if (!prefs.getBoolean("theme", false)){
+            fragmentReplace(homeFragment);
+        }
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -66,12 +78,12 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             }
-        }, 1000);
+        }, 0);
 
         binding.bottomnavigation.setOnItemSelectedListener(item -> {
-            switch (item.getItemId()){
+            switch (item.getItemId()) {
                 case R.id.Home:
-                    fragmentReplace(new HomeFragment());
+                    fragmentReplace(homeFragment);
                     break;
                 case R.id.Calendars:
                     fragmentReplace(calendarFragment);
@@ -87,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
 //        Toast.makeText(getApplicationContext(),
 //                getScreenOrientation()+"", Toast.LENGTH_SHORT).show();
 //        sky = findViewById(R.id.constraintLayout);
@@ -100,11 +111,10 @@ public class MainActivity extends AppCompatActivity {
 //        mainList.setAdapter(adapter);
 
 
-
     }
 
-    public void fragmentReplace(Fragment fragment){
-        FragmentManager fragmentManager =  getSupportFragmentManager();
+    public void fragmentReplace(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout, fragment);
         fragmentTransaction.commit();

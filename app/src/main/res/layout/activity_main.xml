@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#431098"
+    style="@style/screen"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -23,9 +23,7 @@
         android:id="@+id/bottomnavigation"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@drawable/cornes_for_bottomnavigation"
-        app:itemIconTint="@color/white"
-        app:itemTextColor="@color/white"
+        style="@style/nav"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.08"

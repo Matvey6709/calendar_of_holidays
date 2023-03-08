@@ -30,13 +30,13 @@ public class GetHolidays {
     TextView maintext;
     TextView maintext2;
 
-    String[] title;
+    public static String[] title;
     String[] subtitle;
     public static String[] description;
 
     int day = 1;
     int month = 1;
-    String datas = "01.01";
+    String datas = "01.02";
     Welcome[] data;
     Holiday[] hol;
 
@@ -53,11 +53,12 @@ public class GetHolidays {
 
         init();
     }
-
+    boolean one = false;
     public void init() {
         runnable = new Runnable() {
             @Override
             public void run() {
+
                 getWeb();
                 try {
                     System.out.println(doc.text());
@@ -90,6 +91,7 @@ public class GetHolidays {
                             @Override
                             public void run() {
                                 adapter = new ListAdapter_MainScreen(activity, title, subtitle, 0);
+
                                 listView.setAdapter(adapter);
                                 adapter.notifyDataSetChanged();
                                 maintext.setText(title[0]);
@@ -103,6 +105,11 @@ public class GetHolidays {
         };
         thread = new Thread(runnable);
         thread.start();
+    }
+
+    public void theme(){
+        adapter = new ListAdapter_MainScreen(activity, title, subtitle, 0);
+        adapter.notifyDataSetChanged();
     }
 
 //    public void setAdapter(ListView listView, ListAdapter_MainScreen adapter) {
@@ -127,5 +134,8 @@ public class GetHolidays {
 
     public String getDescription(int pos){
         return description[pos];
+    }
+    public String title(int pos){
+        return title[pos];
     }
 }

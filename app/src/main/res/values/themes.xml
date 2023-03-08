@@ -42,4 +42,49 @@
     </style>
     <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Screen">
+        <item name="android:background">#273B4A</item>
+    </style>
+    <style name="text">
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="text_main_sc">
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="main_bac">
+        <item name="android:background">#41158A</item>
+    </style>
+    <style name="nav" parent="Animation.Design.BottomSheetDialog">
+        <item name="android:background">#7F4CD2</item>
+        <item name="itemIconTint" tools:targetApi="o">@color/white</item>
+        <item name="itemTextColor" tools:targetApi="o">@color/white</item>
+    </style>
+    <style name="screen">
+        <item name="android:background">#431098</item>
+    </style>
+    <style name="list">
+        <item name="android:background">@drawable/corners2</item>
+    </style>
+    <style name="bac_sc" parent="Div.Image">
+        <item name="srcCompat">@drawable/backround</item>
+    </style>
+
+    <style name="bac_points" parent="Div.Image">
+        <item name="srcCompat">@drawable/sky_star</item>
+    </style>
+
+    <style name="bac_main_land" parent="Div.Image">
+        <item name="srcCompat">@drawable/sky_land2</item>
+    </style>
+    <style name="bac_moon" parent="Div.Image">
+        <item name="srcCompat">@drawable/sky_moon</item>
+    </style>
+    <style name="bac_solap" >
+        <item name="android:background">@drawable/corners3</item>
+    </style>
+    <style name="img_but_cal" parent="Widget.AppCompat.ImageButton">
+        <item name="tint">@color/white</item>
+    </style>
+
 </resources>
