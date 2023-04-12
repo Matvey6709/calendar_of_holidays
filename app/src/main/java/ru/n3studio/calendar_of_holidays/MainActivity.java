@@ -48,24 +48,29 @@ public class MainActivity extends AppCompatActivity {
     WidgetFragment widgetFragment;
     public static SettingsFragment settingsFragment;
     SharedPreferences prefs;
-
+    boolean night_mode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         homeFragment = new HomeFragment();
         prefs = this.getSharedPreferences(
                 "theme", Context.MODE_PRIVATE);
         calendarFragment = new CalendarFragment();
         widgetFragment = new WidgetFragment();
         settingsFragment = new SettingsFragment();
-        if (prefs.getBoolean("theme", false)) {
-            prefs.edit().putBoolean("theme", false).apply();
+        prefs = this.getSharedPreferences("theme", Context.MODE_PRIVATE);
+        if(prefs.getBoolean("theme", false)){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+        if(prefs.getBoolean("theme_ch", false)){
             fragmentReplace(settingsFragment);
-        } else if (!prefs.getBoolean("theme", false)){
-            fragmentReplace(homeFragment);
+            prefs.edit().putBoolean("theme_ch", false).apply();
+        }else {
+            fragmentReplace(new HomeFragment());
         }
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -83,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         binding.bottomnavigation.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.Home:
-                    fragmentReplace(homeFragment);
+                    fragmentReplace(new HomeFragment());
                     break;
                 case R.id.Calendars:
                     fragmentReplace(calendarFragment);
@@ -112,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
 
     public void fragmentReplace(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();

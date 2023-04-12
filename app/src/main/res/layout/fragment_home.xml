@@ -3,31 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/clRoot"
+    style="@style/screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity"
-    style="@style/screen">
-
+    tools:context=".MainActivity">
 
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/ablAppbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:visibility="visible">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/ctlToolbar"
+            style="@style/main_bac"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/main_bac"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/tToolbar"
+                style="@style/main_bac"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                style="@style/main_bac"
                 app:layout_collapseMode="pin" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -47,39 +47,39 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fillViewport="true"
             app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-            android:fillViewport="true">
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
             <LinearLayout
                 android:id="@+id/the_main_scroll"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:layout_constraintWidth_percent="0.9"
                 android:layout_gravity="center"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.75">
+                app:layout_constraintVertical_bias="0.75"
+                app:layout_constraintWidth_percent="0.9">
 
                 <TextView
-                    style="@style/text_main_sc"
-                    android:layout_marginTop="15dp"
                     android:id="@+id/textView4"
+                    style="@style/text_main_sc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:autoSizeMaxTextSize="50sp"
+                    android:autoSizeMinTextSize="15sp"
+                    android:autoSizeStepGranularity="2sp"
+                    android:autoSizeTextType="uniform"
                     android:fontFamily="@font/poppins_semibold"
+                    android:gravity="center_horizontal"
+                    android:maxLines="1"
                     android:text="Ещё праздники в этот день:"
                     android:textSize="25sp"
-                    android:gravity="center_horizontal"
-                    android:autoSizeTextType="uniform"
-                    android:autoSizeMinTextSize="15sp"
-                    android:autoSizeMaxTextSize="50sp"
-                    android:autoSizeStepGranularity="2sp"
-                    android:maxLines="1"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.498"
@@ -103,16 +103,16 @@
                 <ListView
                     android:id="@+id/Main_ListView"
                     android:layout_width="fill_parent"
-                    android:nestedScrollingEnabled="true"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="1dp"
                     android:layout_marginEnd="1dp"
+                    android:fillViewport="true"
+                    android:nestedScrollingEnabled="true"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0"
-                    android:fillViewport="true">
+                    app:layout_constraintVertical_bias="1.0">
 
                 </ListView>
 
@@ -129,48 +129,88 @@
         layout="@layout/top_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_behavior="ru.n3studio.calendar_of_holidays.kot.TopInfoBehavior"
-        android:clickable="false" />
+        app:layout_behavior="ru.n3studio.calendar_of_holidays.kot.TopInfoBehavior" />
 
     <FrameLayout
         android:id="@+id/top_sheet"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         style="@style/bac_solap"
-        app:behavior_peekHeight="280dp">
-<!--        app:layout_behavior=".TopSheetBehavior">-->
+        android:layout_width="match_parent"
+        android:layout_height="1000dp"
+        app:behavior_peekHeight="280dp"
+        app:layout_behavior=".TopSheetBehavior">
 
-
-        <TextView
-            android:id="@+id/description"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="90dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            style="@style/text"
-            android:text="здесь будет текст"
-            tools:ignore="HardcodedText"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:scrollbars="vertical">
 
-        <include
-            android:visibility="visible"
-            android:id="@+id/iTopDetailss"
-            layout="@layout/top_wiew2"
-            android:layout_gravity="bottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_behavior="ru.n3studio.calendar_of_holidays.kot.TopInfoBehavior"
-            />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <ImageButton
+                    android:id="@+id/but_back"
+                    style="@style/but_back"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@null"
+                    android:src="@drawable/ic_baseline_arrow_back_24"/>
+            </LinearLayout>
+            <ScrollView
+                android:id="@+id/ScrollView1"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="7"
+                android:visibility="invisible">
+
+                <TextView
+                    android:id="@+id/description"
+                    style="@style/text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="20dp"
+                    android:text="здесь будет текст"
+                    android:textSize="18sp"
+                    android:visibility="visible"
+                    tools:ignore="HardcodedText" />
+
+            </ScrollView>
+
+            <TextView
+
+                android:id="@+id/description2"
+                style="@style/text"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="90dp"
+                android:text="здесь будет текст"
+                android:textSize="18sp"
+                android:visibility="visible"
+                tools:ignore="HardcodedText" />
+
+            <include
+                android:id="@+id/iTopDetailss"
+                layout="@layout/top_wiew2"
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+                android:layout_gravity="bottom"
+                android:visibility="visible"
+                app:layout_behavior="ru.n3studio.calendar_of_holidays.kot.TopInfoBehavior" />
+        </LinearLayout>
+
 
     </FrameLayout>
 
     <TextView
         android:id="@+id/fdg"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
-
+        android:layout_height="wrap_content" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -34,9 +34,9 @@ public class GetHolidays {
     String[] subtitle;
     public static String[] description;
 
-    int day = 1;
+    int day1 = 1;
     int month = 1;
-    String datas = "01.02";
+    String datas = "10.03";
     Welcome[] data;
     Holiday[] hol;
 
@@ -50,7 +50,6 @@ public class GetHolidays {
         this.listView = listView;
         this.maintext = maintext;
         this.maintext2 = maintext2;
-
         init();
     }
     boolean one = false;

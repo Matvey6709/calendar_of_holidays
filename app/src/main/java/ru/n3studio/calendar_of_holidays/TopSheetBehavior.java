@@ -17,6 +17,8 @@ package ru.n3studio.calendar_of_holidays;
  */
 
 
+import static ru.n3studio.calendar_of_holidays.Fragments.HomeFragment.nesteScroll;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
@@ -238,60 +240,60 @@ public class TopSheetBehavior<V extends View> extends CoordinatorLayout.Behavior
 
     @Override
     public boolean onInterceptTouchEvent(CoordinatorLayout parent, V child, MotionEvent event) {
-        if (!child.isShown()) {
-            return false;
-        }
-        int action = MotionEventCompat.getActionMasked(event);
-        // Record the velocity
-        if (action == MotionEvent.ACTION_DOWN) {
-            reset();
-            System.out.println("нажато");
-        }
-        if (mVelocityTracker == null) {
-            mVelocityTracker = VelocityTracker.obtain();
-        }
-        mVelocityTracker.addMovement(event);
-        switch (action) {
-            case MotionEvent.ACTION_UP:
-            case MotionEvent.ACTION_CANCEL:
-                mTouchingScrollingChild = false;
-                mActivePointerId = MotionEvent.INVALID_POINTER_ID;
-                // Reset the ignore flag
-                if (mIgnoreEvents) {
-                    mIgnoreEvents = false;
-                    return false;
-                }
-                break;
-            case MotionEvent.ACTION_DOWN:
-                System.out.println("нажато2");
-                int initialX = (int) event.getX();
-                mInitialY = (int) event.getY();
-                View scroll = mNestedScrollingChildRef.get();
-                if (scroll != null && parent.isPointInChildBounds(scroll, initialX, mInitialY)) {
-                    mActivePointerId = event.getPointerId(event.getActionIndex());
-                    mTouchingScrollingChild = true;
-                }
-                mIgnoreEvents = mActivePointerId == MotionEvent.INVALID_POINTER_ID &&
-                        !parent.isPointInChildBounds(child, initialX, mInitialY);
-                break;
-        }
-        if (!mIgnoreEvents && mViewDragHelper.shouldInterceptTouchEvent(event)) {
-            return true;
-        }
-        // We have to handle cases that the ViewDragHelper does not capture the top sheet because
-        // it is not the top most view of its parent. This is not necessary when the touch event is
-        // happening over the scrolling content as nested scrolling logic handles that case.
-        View scroll = mNestedScrollingChildRef.get();
-        return action == MotionEvent.ACTION_MOVE && scroll != null &&
-                !mIgnoreEvents && mState != STATE_DRAGGING &&
-                !parent.isPointInChildBounds(scroll, (int) event.getX(), (int) event.getY()) &&
-                Math.abs(mInitialY - event.getY()) > mViewDragHelper.getTouchSlop();
+//        if (!child.isShown()) {
+//            return false;
+//        }
+//        int action = MotionEventCompat.getActionMasked(event);
+//        // Record the velocity
+//        if (action == MotionEvent.ACTION_DOWN) {
+//            reset();
+//            System.out.println("нажато");
+//        }
+//        if (mVelocityTracker == null) {
+//            mVelocityTracker = VelocityTracker.obtain();
+//        }
+//        mVelocityTracker.addMovement(event);
+//        switch (action) {
+//            case MotionEvent.ACTION_UP:
+//            case MotionEvent.ACTION_CANCEL:
+//                mTouchingScrollingChild = false;
+//                mActivePointerId = MotionEvent.INVALID_POINTER_ID;
+////                // Reset the ignore flag
+//                if (mIgnoreEvents) {
+//                    mIgnoreEvents = false;
+//                    return false;
+//                }
+//                break;
+//            case MotionEvent.ACTION_DOWN:
+//                System.out.println("нажато2");
+//                int initialX = (int) event.getX();
+//                mInitialY = 0;
+//                View scroll = mNestedScrollingChildRef.get();
+//                if (scroll != null && parent.isPointInChildBounds(scroll, initialX, mInitialY)) {
+//                    mActivePointerId = event.getPointerId(event.getActionIndex());
+//                    mTouchingScrollingChild = true;
+//                }
+//                mIgnoreEvents = mActivePointerId == MotionEvent.INVALID_POINTER_ID &&
+//                        !parent.isPointInChildBounds(child, initialX, mInitialY);
+//                break;
+//        }
+//        if (!mIgnoreEvents && mViewDragHelper.shouldInterceptTouchEvent(event)) {
+//            return true;
+//        }
+//        // We have to handle cases that the ViewDragHelper does not capture the top sheet because
+//        // it is not the top most view of its parent. This is not necessary when the touch event is
+//        // happening over the scrolling content as nested scrolling logic handles that case.
+//        View scroll = mNestedScrollingChildRef.get();
+        return false;
     }
 
     boolean f = false;
 
     @Override
     public boolean onTouchEvent(CoordinatorLayout parent, V child, MotionEvent event) {
+            HomeFragment.scrollView.setVisibility(View.VISIBLE);
+            HomeFragment.description2.setVisibility(View.INVISIBLE);
+
 
         if (!child.isShown()) {
             return false;
@@ -310,6 +312,7 @@ public class TopSheetBehavior<V extends View> extends CoordinatorLayout.Behavior
             if (mVelocityTracker == null) {
                 mVelocityTracker = VelocityTracker.obtain();
                 System.out.println("нажато первый раз");
+                nesteScroll.setVisibility(View.VISIBLE);
             }
             mVelocityTracker.addMovement(event);
             // The ViewDragHelper tries to capture only the top-most View. We have to explicitly tell it
@@ -331,6 +334,8 @@ public class TopSheetBehavior<V extends View> extends CoordinatorLayout.Behavior
                                        View directTargetChild, View target, int nestedScrollAxes) {
         mLastNestedScrollDy = 0;
         mNestedScrolled = false;
+//        HomeFragment.scrollView.setVisibility(View.VISIBLE);
+//        HomeFragment.description2.setVisibility(View.INVISIBLE);
         return (nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
     }
 
@@ -376,6 +381,8 @@ public class TopSheetBehavior<V extends View> extends CoordinatorLayout.Behavior
 
     @Override
     public void onStopNestedScroll(CoordinatorLayout coordinatorLayout, V child, View target) {
+        HomeFragment.scrollView.setVisibility(View.VISIBLE);
+        HomeFragment.description2.setVisibility(View.INVISIBLE);
         if (child.getTop() == mMaxOffset) {
             setStateInternal(STATE_EXPANDED);
             return;
@@ -679,6 +686,8 @@ public class TopSheetBehavior<V extends View> extends CoordinatorLayout.Behavior
                         HomeFragment.vs.setVisibility(View.INVISIBLE);
                     }
                 }, 100);
+                System.out.println("Когда закрылось");
+                nesteScroll.setVisibility(View.VISIBLE);
                 targetState = STATE_COLLAPSED;
             }
             if (mViewDragHelper.settleCapturedViewAt(releasedChild.getLeft(), top)) {
@@ -743,6 +752,12 @@ public class TopSheetBehavior<V extends View> extends CoordinatorLayout.Behavior
         public void run() {
             if (mViewDragHelper != null && mViewDragHelper.continueSettling(true)) {
                 System.out.println("когда окно закрылось или открытлось");
+                if(mTargetState == STATE_COLLAPSED){
+                    nesteScroll.setVisibility(View.VISIBLE);
+                }
+                if(mTargetState == STATE_EXPANDED){
+                    nesteScroll.setVisibility(View.INVISIBLE);
+                }
                 ViewCompat.postOnAnimation(mView, this);
             } else {
                 setStateInternal(mTargetState);

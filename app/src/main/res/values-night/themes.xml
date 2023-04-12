@@ -84,5 +84,12 @@
     <style name="img_but_cal" parent="Widget.AppCompat.ImageButton">
         <item name="tint">#273B4A</item>
     </style>
+    <style name="but">
+        <item name="android:background">@drawable/corners2_ligth</item>
+        <item name="android:textColor">#273B4A</item>
+    </style>
+    <style name="but_back">
+        <item name="android:tint">#273B4A</item>
+    </style>
 
 </resources>
