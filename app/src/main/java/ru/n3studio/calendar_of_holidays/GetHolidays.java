@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.io.IOException;
 
@@ -61,8 +62,10 @@ public class GetHolidays {
                 getWeb();
                 try {
                     System.out.println(doc.text());
+                    Element root = (Element) doc.getElementById("item0");
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                         data = Converter.fromJsonString(doc.text());
+
                     }
                     for (int i = 0; i < data.length - 1; i++) {
                         System.out.println(data[i].getDate());

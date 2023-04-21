@@ -1,10 +1,13 @@
 package ru.n3studio.calendar_of_holidays;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreferenceCompat;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -63,14 +66,24 @@ public class MainActivity extends AppCompatActivity {
         widgetFragment = new WidgetFragment();
         settingsFragment = new SettingsFragment();
         prefs = this.getSharedPreferences("theme", Context.MODE_PRIVATE);
-        if(prefs.getBoolean("theme", false)){
+        if (prefs.getBoolean("theme", false)) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
-        if(prefs.getBoolean("theme_ch", false)){
+        if (prefs.getBoolean("theme_ch", false)) {
             fragmentReplace(settingsFragment);
             prefs.edit().putBoolean("theme_ch", false).apply();
-        }else {
+        } else {
             fragmentReplace(new HomeFragment());
+        }
+//        if (savedInstanceState == null) {
+//            getSupportFragmentManager()
+//                    .beginTransaction()
+//                    .replace(R.id.settings, new fragment_settings1.SettingsFragment())
+//                    .commit();
+//        }
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
         }
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -97,7 +110,16 @@ public class MainActivity extends AppCompatActivity {
                     fragmentReplace(widgetFragment);
                     break;
                 case R.id.Settings:
-                    fragmentReplace(settingsFragment);
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.frameLayout, new SettingsFragment())
+                            .commit();
+
+                    ActionBar acdtionBar = getSupportActionBar();
+                    if (acdtionBar != null) {
+                        acdtionBar.setDisplayHomeAsUpEnabled(true);
+                    }
+
                     break;
             }
             return true;
@@ -117,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
 
 
     public void fragmentReplace(Fragment fragment) {

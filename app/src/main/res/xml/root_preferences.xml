@@ -1,0 +1,34 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="@string/theme">
+        <SwitchPreferenceCompat
+            android:id="@+id/switch1"
+            app:iconSpaceReserved="false"
+            android:supportsRtl="true"
+            app:key="theme123"
+
+            app:title="@string/theme_dark_title" />
+    </PreferenceCategory>
+
+
+
+        <PreferenceCategory app:title="Поделиться приложением" app:iconSpaceReserved="false" >
+            <Preference
+                app:iconSpaceReserved="false"
+                android:title="Поделиться приложением"
+                android:key="share"
+                />
+            <Preference
+                app:iconSpaceReserved="false"
+                android:title="Оставить отзыв"
+                android:key="dd"
+                android:summary="Будем благодарны)"
+                />
+
+
+        </PreferenceCategory>
+
+</PreferenceScreen>

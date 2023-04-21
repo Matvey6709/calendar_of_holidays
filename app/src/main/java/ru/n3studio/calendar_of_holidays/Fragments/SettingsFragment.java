@@ -7,62 +7,68 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreference;
+import androidx.preference.SwitchPreferenceCompat;
 
+import android.preference.PreferenceActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.Switch;
 
 import ru.n3studio.calendar_of_holidays.BuildConfig;
 import ru.n3studio.calendar_of_holidays.R;
 
-public class SettingsFragment extends Fragment {
 
-    View v;
-    Switch dark_switch;
+public class SettingsFragment extends PreferenceFragmentCompat {
+    SwitchPreferenceCompat  dark_switch;
     SharedPreferences prefs;
-    Button sh_button;
+    Preference sh_button;
     boolean night_mode = false;
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        v = inflater.inflate(R.layout.fragment_settings, container, false);
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        setPreferencesFromResource(R.xml.root_preferences, rootKey);
         prefs = getActivity().getSharedPreferences(
                 "theme", Context.MODE_PRIVATE);
-        dark_switch = v.findViewById(R.id.switch1);
+        dark_switch = findPreference("theme123");
+        System.out.println(dark_switch.getKey());
         prefs = getActivity().getSharedPreferences("theme", Context.MODE_PRIVATE);
         night_mode = prefs.getBoolean("theme", false);
         if(night_mode){
             dark_switch.setChecked(true);
-            dark_switch.setText("Светлая тема");
+            dark_switch.setTitle("Светлая тема");
         }else {
-            dark_switch.setText("Тёмная тема");
+            dark_switch.setChecked(false);
+            dark_switch.setTitle(R.string.attachment_title);
         }
 
-        dark_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+        dark_switch.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
                 if(night_mode){
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                     prefs.edit().putBoolean("theme", false).apply();
-                    dark_switch.setText("Светлая тема");
-
+                    dark_switch.setTitle("Светлая тема");
+                    dark_switch.setChecked(true);
                 }else {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                     prefs.edit().putBoolean("theme", true).apply();
-                    dark_switch.setText("Тёмная тема");
+                    dark_switch.setTitle("Тёмная тема");
+                    dark_switch.setChecked(true);
                 }
                 prefs.edit().putBoolean("theme_ch", true).apply();
+                return false;
             }
         });
 
-        sh_button = v.findViewById(R.id.sh_button);
-        sh_button.setOnClickListener(new View.OnClickListener() {
+        sh_button = findPreference("share");
+        sh_button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
             @Override
-            public void onClick(View v) {
+            public boolean onPreferenceClick(Preference preference) {
                 try {
                     Intent shareIntent = new Intent(Intent.ACTION_SEND);
                     shareIntent.setType("text/plain");
@@ -72,10 +78,11 @@ public class SettingsFragment extends Fragment {
                     shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
                     startActivity(Intent.createChooser(shareIntent, "choose one"));
                 } catch(Exception e) {}
+                return false;
             }
         });
-        return v;
+
+
     }
-
-
 }
+

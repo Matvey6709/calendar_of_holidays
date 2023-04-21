@@ -166,7 +166,7 @@ public class HomeFragment extends Fragment {
         });
 
         if (GetHolidays.adapter == null) {
-            holidays = new GetHolidays("http://n3studio.ru/holidays.json", getActivity(), mainList, title1, title2);
+            holidays = new GetHolidays("http://n3studio.ru/holiday_example.xml", getActivity(), mainList, title1, title2);
         } else {
             try {
                 GetHolidays.adapter.notifyDataSetChanged();
